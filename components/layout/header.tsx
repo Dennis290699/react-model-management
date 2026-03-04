@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -57,7 +57,7 @@ export const Header: React.FC = () => {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out border-b border-transparent",
           isScrolled
-            ? "bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md py-4 border-neutral-200/50 dark:border-white/5"
+            ? "bg-white/95 md:bg-white/80 dark:bg-neutral-950/95 md:dark:bg-neutral-950/80 md:backdrop-blur-md py-4 border-neutral-200/50 dark:border-white/5"
             : "bg-transparent py-6 md:py-8"
         )}
       >

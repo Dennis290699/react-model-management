@@ -22,7 +22,7 @@ export const Categories: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {categories.map((cat, idx) => (
-          <motion.div 
+          <motion.div
             key={idx}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -30,17 +30,18 @@ export const Categories: React.FC = () => {
             viewport={{ once: true }}
             className="group relative h-[400px] overflow-hidden cursor-pointer"
           >
-            <img 
-              src={cat.image} 
-              alt={cat.title} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+            <img
+              src={cat.image}
+              alt={cat.title}
+              loading="lazy"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 md:grayscale group-hover:grayscale-0 will-change-transform"
             />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors" />
             <div className="absolute inset-0 flex items-center justify-center">
-               <div className="text-center">
-                  <h3 className="text-3xl text-white font-serif uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{cat.title}</h3>
-                  <p className="text-white/70 text-xs tracking-[0.3em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 mt-2">View Board</p>
-               </div>
+              <div className="text-center">
+                <h3 className="text-3xl text-white font-serif uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{cat.title}</h3>
+                <p className="text-white/70 text-xs tracking-[0.3em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 mt-2">View Board</p>
+              </div>
             </div>
           </motion.div>
         ))}
