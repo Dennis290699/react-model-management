@@ -1,0 +1,31 @@
+{
+  "name": "react-model-management",
+  "description": "A luxury fashion modeling agency portfolio website featuring a dark/light mode, responsive design, and high-impact visual aesthetics.",
+  "author": "Dennis290699",
+  "license": "Dennis290699",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.34.0",
+    "lucide-react": "^0.564.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.4.1",
+    "tailwindcss": "^4.2.1",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
