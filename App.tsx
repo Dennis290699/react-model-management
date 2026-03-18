@@ -13,6 +13,9 @@ import { CastingOverlay } from './components/layout/casting-overlay';
 import { CategoryPage } from './components/pages/category-page';
 import { Preloader } from './components/layout/preloader';
 import { AnimatePresence } from 'framer-motion';
+import { models } from './data/mock-models';
+import { ViewType } from './types';
+
 
 const App: React.FC = () => {
   const { theme, viewingModel, currentView } = useStore();
@@ -26,6 +29,40 @@ const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [theme]);
+
+  // Handle URL syncing
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const store = useStore.getState();
+      
+      if (path.startsWith('/model/')) {
+        const id = path.split('/')[2];
+        const model = models.find(m => m.id === id) || null;
+        if (model) {
+          store.setViewingModel(model);
+        } else {
+          store.setCurrentView('home');
+        }
+      } else {
+        const view = path === '/' ? 'home' : path.substring(1);
+        // Only set view if it's a valid category or home to avoid random paths breaking it
+        const validViews = ['home', 'women', 'men', 'new-faces', 'direct', 'curve', 'creatives'];
+        if (validViews.includes(view)) {
+          store.setCurrentView(view as ViewType);
+        } else {
+          store.setCurrentView('home');
+          window.history.replaceState(null, '', '/');
+        }
+      }
+    };
+
+    // Call on mount to handle initial deep link
+    handlePopState();
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Render logic for main content area
   const renderMainContent = () => {

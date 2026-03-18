@@ -15,12 +15,13 @@ export const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
   const isSelected = selectedModels.includes(model.id);
 
   return (
-    <motion.div
+    <motion.a
+      href={`/model/${model.id}`}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      className="group relative w-full aspect-[3/4.5] overflow-hidden cursor-pointer bg-neutral-900"
-      onClick={() => setViewingModel(model)}
+      className="group relative w-full aspect-[3/4.5] overflow-hidden cursor-pointer bg-neutral-900 block"
+      onClick={(e) => { e.preventDefault(); setViewingModel(model); }}
     >
       {/* 1. Background Image with Cinematic Transition */}
       <div className="absolute inset-0 w-full h-full">
@@ -39,6 +40,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
       {/* 2. Selection Indicator / Action Button (Top Right) */}
       <button
         onClick={(e) => {
+          e.preventDefault();
           e.stopPropagation();
           toggleModelSelection(model.id);
         }}
@@ -114,6 +116,6 @@ export const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
         isSelected && "border-gold-500/100 inset-4"
       )} />
 
-    </motion.div>
+    </motion.a>
   );
 };

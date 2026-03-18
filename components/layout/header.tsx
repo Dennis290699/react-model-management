@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
 
           {/* Logo */}
           <div className="flex-shrink-0 z-50 relative">
-            <a href="#" onClick={handleLogoClick} className="group flex flex-col items-center justify-center relative">
+            <a href="/" onClick={handleLogoClick} className="group flex flex-col items-center justify-center relative">
               <span className={cn(
                 "font-serif text-2xl md:text-3xl leading-none italic tracking-tight transition-colors duration-300",
                 isScrolled ? "text-neutral-900 dark:text-white" : "text-white"
@@ -85,9 +85,10 @@ export const Header: React.FC = () => {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 xl:gap-12 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
             {navLinks.map((link) => (
-              <button
+              <a
                 key={link.name}
-                onClick={() => handleNavClick(link.view)}
+                href={`/${link.view}`}
+                onClick={(e) => { e.preventDefault(); handleNavClick(link.view); }}
                 className={cn(
                   "relative text-[10px] uppercase tracking-[0.25em] font-medium transition-colors duration-300 group py-2",
                   isScrolled ? "text-neutral-600 dark:text-neutral-300 hover:text-black dark:hover:text-white" : "text-white/80 hover:text-white",
@@ -99,7 +100,7 @@ export const Header: React.FC = () => {
                   "absolute bottom-0 left-0 w-full h-[1px] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-center",
                   isScrolled ? "bg-gold-500" : "bg-white"
                 )} />
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -180,9 +181,10 @@ export const Header: React.FC = () => {
               <div className="py-8 mt-auto mb-auto">
                 <nav className="flex flex-col gap-6 md:gap-8 mb-10">
                   {navLinks.map((link, i) => (
-                    <motion.button
+                    <motion.a
                       key={link.name}
-                      onClick={() => handleNavClick(link.view)}
+                      href={`/${link.view}`}
+                      onClick={(e) => { e.preventDefault(); handleNavClick(link.view); }}
                       initial={{ opacity: 0, x: -30 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + (i * 0.05), duration: 0.5 }}
@@ -190,7 +192,7 @@ export const Header: React.FC = () => {
                     >
                       <span className="w-0 group-hover:w-8 h-px bg-gold-500 transition-all duration-300 opacity-0 group-hover:opacity-100"></span>
                       {link.name}
-                    </motion.button>
+                    </motion.a>
                   ))}
                 </nav>
 

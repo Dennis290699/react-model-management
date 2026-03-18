@@ -23,7 +23,7 @@ interface AppState {
   setIsCastingOpen: (isOpen: boolean) => void;
 }
 
-export const useStore = create<AppState>((set) => ({
+export const useStore = create<AppState>((set, get) => ({
   theme: 'dark', 
   toggleTheme: () => set((state) => {
     const newTheme = state.theme === 'light' ? 'dark' : 'light';
@@ -38,7 +38,13 @@ export const useStore = create<AppState>((set) => ({
   }),
   
   currentView: 'home',
-  setCurrentView: (view) => set({ currentView: view, viewingModel: null }),
+  setCurrentView: (view) => {
+    const path = view === 'home' ? '/' : `/${view}`;
+    if (typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
+    set({ currentView: view, viewingModel: null });
+  },
 
   selectedModels: [],
   toggleModelSelection: (id) => set((state) => {
@@ -52,7 +58,23 @@ export const useStore = create<AppState>((set) => ({
   clearSelection: () => set({ selectedModels: [] }),
   
   viewingModel: null,
-  setViewingModel: (model) => set({ viewingModel: model }),
+  setViewingModel: (model) => {
+    if (typeof window !== 'undefined') {
+      if (model) {
+        const path = `/model/${model.id}`;
+        if (window.location.pathname !== path) {
+          window.history.pushState(null, '', path);
+        }
+      } else {
+        const currentView = get().currentView;
+        const path = currentView === 'home' ? '/' : `/${currentView}`;
+        if (window.location.pathname !== path) {
+          window.history.pushState(null, '', path);
+        }
+      }
+    }
+    set({ viewingModel: model });
+  },
   
   isSearchOpen: false,
   setIsSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),

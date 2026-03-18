@@ -16,9 +16,9 @@ export const Footer: React.FC = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-24 mb-20">
             {/* Brand Column */}
-            <div className="lg:col-span-4 flex flex-col items-start">
+            <div className="md:col-span-6 lg:col-span-4 flex flex-col items-start">
                <div className="flex flex-col border border-white/10 p-6 bg-white/[0.02] backdrop-blur-sm mb-8 transition-colors hover:border-gold-500/30">
                   <span className="font-serif text-3xl text-white italic">La Angels</span>
                   <span className="text-[10px] uppercase tracking-[0.3em] text-gold-500 mt-1">Model Management</span>
@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* Links Columns */}
-            <div className="lg:col-span-2">
+            <div className="md:col-span-3 lg:col-span-2">
                 <h4 className="text-white font-bold uppercase tracking-[0.2em] text-xs mb-8 border-b border-white/10 pb-4 inline-block">Agency</h4>
                 <ul className="space-y-4 text-sm font-light">
                    {['About Us', 'Our Team', 'Careers', 'Locations', 'Press'].map((item) => (
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
                 </ul>
             </div>
 
-            <div className="lg:col-span-2">
+            <div className="md:col-span-3 lg:col-span-2">
                 <h4 className="text-white font-bold uppercase tracking-[0.2em] text-xs mb-8 border-b border-white/10 pb-4 inline-block">Talent</h4>
                 <ul className="space-y-4 text-sm font-light">
                    {['Women', 'Men', 'New Faces', 'Direct', 'Become a Model'].map((item) => (
@@ -63,7 +63,7 @@ export const Footer: React.FC = () => {
             </div>
 
              {/* Newsletter Column */}
-             <div className="lg:col-span-4">
+             <div className="md:col-span-6 lg:col-span-4">
                 <h4 className="text-white font-serif text-2xl italic mb-6">Stay in the loop</h4>
                 <p className="text-neutral-500 text-sm mb-8 font-light">
                   Subscribe to receive updates, access to exclusive deals, and more.
