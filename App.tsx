@@ -19,7 +19,19 @@ import { ViewType } from './types';
 
 const App: React.FC = () => {
   const { theme, viewingModel, currentView } = useStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    if (typeof sessionStorage !== 'undefined') {
+      return !sessionStorage.getItem('hasSeenPreloader');
+    }
+    return true;
+  });
+
+  const handlePreloaderComplete = () => {
+    setIsLoading(false);
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('hasSeenPreloader', 'true');
+    }
+  };
 
   // Initialize theme on mount
   useEffect(() => {
@@ -87,7 +99,7 @@ const App: React.FC = () => {
       {/* Preloader launches once on mount */}
       <AnimatePresence>
         {isLoading && (
-           <Preloader onComplete={() => setIsLoading(false)} />
+           <Preloader onComplete={handlePreloaderComplete} />
         )}
       </AnimatePresence>
 
