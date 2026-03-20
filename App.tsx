@@ -15,10 +15,22 @@ import { Preloader } from './components/layout/preloader';
 import { AnimatePresence } from 'framer-motion';
 import { models } from './data/mock-models';
 import { ViewType } from './types';
+import { Routes, Route, useLocation, useParams, useMatch, Navigate } from 'react-router-dom';
 
+
+const CategoryPageWrapper = () => {
+  const { category } = useParams();
+  const validViews = ['women', 'men', 'new-faces', 'direct', 'curve', 'creatives'];
+  if (!category || !validViews.includes(category)) {
+    return <Navigate to="/" replace />;
+  }
+  return <CategoryPage key={category} category={category as ViewType} />;
+};
 
 const App: React.FC = () => {
-  const { theme, viewingModel, currentView } = useStore();
+  const { theme } = useStore();
+  const location = useLocation();
+  
   const [isLoading, setIsLoading] = useState(() => {
     if (typeof sessionStorage !== 'undefined') {
       return !sessionStorage.getItem('hasSeenPreloader');
@@ -42,61 +54,17 @@ const App: React.FC = () => {
     }
   }, [theme]);
 
-  // Handle URL syncing
+  // Scroll to top when navigating to a new category or top-level page
   useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      const store = useStore.getState();
-      
-      if (path.startsWith('/model/')) {
-        const id = path.split('/')[2];
-        const model = models.find(m => m.id === id) || null;
-        if (model) {
-          store.setViewingModel(model);
-        } else {
-          store.setCurrentView('home');
-        }
-      } else {
-        const view = path === '/' ? 'home' : path.substring(1);
-        // Only set view if it's a valid category or home to avoid random paths breaking it
-        const validViews = ['home', 'women', 'men', 'new-faces', 'direct', 'curve', 'creatives'];
-        if (validViews.includes(view)) {
-          store.setCurrentView(view as ViewType);
-        } else {
-          store.setCurrentView('home');
-          window.history.replaceState(null, '', '/');
-        }
-      }
-    };
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
-    // Call on mount to handle initial deep link
-    handlePopState();
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  // Render logic for main content area
-  const renderMainContent = () => {
-    if (currentView === 'home') {
-      return (
-        <div key="home">
-          <Hero />
-          <PopularModels />
-          <ElleFeature />
-          <Categories />
-          <Testimonials />
-        </div>
-      );
-    }
-    
-    // Render specific category page
-    return <CategoryPage key={currentView} category={currentView} />;
-  };
+  const modelMatch = useMatch('/model/:id');
+  const viewingModelId = modelMatch?.params.id;
+  const viewingModel = viewingModelId ? models.find(m => m.id === viewingModelId) : null;
 
   return (
     <>
-      {/* Preloader launches once on mount */}
       <AnimatePresence>
         {isLoading && (
            <Preloader onComplete={handlePreloaderComplete} />
@@ -116,7 +84,19 @@ const App: React.FC = () => {
               <Header />
               <main className="flex-grow">
                  <AnimatePresence mode="wait">
-                    {renderMainContent()}
+                    {/* @ts-expect-error key is valid in React but missing in RRD types */}
+                    <Routes location={location} key={location.pathname}>
+                       <Route path="/" element={
+                          <div key="home">
+                            <Hero />
+                            <PopularModels />
+                            <ElleFeature />
+                            <Categories />
+                            <Testimonials />
+                          </div>
+                       } />
+                       <Route path="/:category" element={<CategoryPageWrapper />} />
+                    </Routes>
                  </AnimatePresence>
               </main>
               <Footer />

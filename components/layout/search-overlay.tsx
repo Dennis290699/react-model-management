@@ -4,9 +4,11 @@ import { X, Search, ArrowRight, MapPin } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { models } from '../../data/mock-models';
 import { cn } from '../../lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 export const SearchOverlay: React.FC = () => {
-  const { isSearchOpen, setIsSearchOpen, setViewingModel } = useStore();
+  const { isSearchOpen, setIsSearchOpen } = useStore();
+  const navigate = useNavigate();
   const [query,QD] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -38,8 +40,8 @@ export const SearchOverlay: React.FC = () => {
       );
 
   const handleModelClick = (model: typeof models[0]) => {
-    setViewingModel(model);
     setIsSearchOpen(false);
+    navigate(`/model/${model.id}`);
     QD('');
   };
 

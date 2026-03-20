@@ -4,6 +4,7 @@ import { Star, ArrowUpRight, Plus, Check } from 'lucide-react';
 import { Model } from '../types';
 import { useStore } from '../store/useStore';
 import { cn } from '../lib/utils';
+import { Link } from 'react-router-dom';
 
 interface ModelCardProps {
   model: Model;
@@ -11,18 +12,17 @@ interface ModelCardProps {
 }
 
 export const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
-  const { toggleModelSelection, selectedModels, setViewingModel } = useStore();
+  const { toggleModelSelection, selectedModels } = useStore();
   const isSelected = selectedModels.includes(model.id);
 
   return (
-    <motion.a
-      href={`/model/${model.id}`}
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      className="group relative w-full aspect-[3/4.5] overflow-hidden cursor-pointer bg-neutral-900 block"
-      onClick={(e) => { e.preventDefault(); setViewingModel(model); }}
+      className="group relative w-full aspect-[3/4.5] overflow-hidden bg-neutral-900 block"
     >
+      <Link to={`/model/${model.id}`} className="absolute inset-0 z-10 cursor-pointer block">
       {/* 1. Background Image with Cinematic Transition */}
       <div className="absolute inset-0 w-full h-full">
         <img
@@ -116,6 +116,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
         isSelected && "border-gold-500/100 inset-4"
       )} />
 
-    </motion.a>
+      </Link>
+    </motion.div>
   );
 };

@@ -5,9 +5,11 @@ import { useStore } from '../../store/useStore';
 import { models } from '../../data/mock-models';
 import { cn } from '../../lib/utils';
 import { Button } from '../ui/button';
+import { useNavigate } from 'react-router-dom';
 
 export const CastingOverlay: React.FC = () => {
-  const { isCastingOpen, setIsCastingOpen, selectedModels, toggleModelSelection, setViewingModel, clearSelection } = useStore();
+  const { isCastingOpen, setIsCastingOpen, selectedModels, toggleModelSelection, clearSelection } = useStore();
+  const navigate = useNavigate();
   
   // State for flow management: list -> brand -> email
   const [step, setStep] = useState<'list' | 'brand' | 'email'>('list');
@@ -264,8 +266,8 @@ export const CastingOverlay: React.FC = () => {
                                                     <div 
                                                         className="w-full md:w-24 h-32 md:h-24 overflow-hidden rounded cursor-pointer relative flex-shrink-0"
                                                         onClick={() => {
-                                                            setViewingModel(model);
                                                             setIsCastingOpen(false);
+                                                            navigate(`/model/${model.id}`);
                                                         }}
                                                     >
                                                         <img src={model.image} alt={model.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />

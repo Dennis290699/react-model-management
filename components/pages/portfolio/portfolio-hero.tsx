@@ -25,7 +25,7 @@ export const PortfolioHero: React.FC<PortfolioHeroProps> = ({ model }) => {
       
       {/* Background Layer */}
       <motion.div 
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 will-change-transform"
         style={{ y: yBg, scale: scaleBg }}
       >
          <div 
@@ -35,12 +35,12 @@ export const PortfolioHero: React.FC<PortfolioHeroProps> = ({ model }) => {
          {/* Cinematic Overlays */}
          <div className="absolute inset-0 bg-neutral-950/20 mix-blend-multiply" />
          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-neutral-950/40 opacity-80" />
-         
-         {/* Film Grain Texture */}
-         <div className="absolute inset-0 opacity-[0.07] pointer-events-none" 
-              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
-         />
       </motion.div>
+
+      {/* Film Grain Texture - Uncoupled from Parallax for Performance */}
+      <div className="absolute inset-0 z-[5] opacity-[0.07] pointer-events-none" 
+           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+      />
 
       {/* Editorial Grid / Lines */}
       <div className="absolute inset-0 z-10 pointer-events-none">
@@ -72,7 +72,7 @@ export const PortfolioHero: React.FC<PortfolioHeroProps> = ({ model }) => {
       <div className="absolute bottom-0 left-0 w-full z-20 px-6 md:px-12 pb-32 md:pb-40">
         <motion.div 
            style={{ y: textY, opacity: opacityText }}
-           className="container mx-auto"
+           className="container mx-auto will-change-transform"
         >
           <motion.div
              initial={{ opacity: 0, y: 50 }}

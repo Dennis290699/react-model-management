@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { motion, useMotionValueEvent, useScroll, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Check, Link as LinkIcon, FileDown, Loader2 } from 'lucide-react';
-import { useStore } from '../../../store/useStore';
+import { Link } from 'react-router-dom';
 import { cn } from '../../../lib/utils';
 import { Model } from '../../../types';
 
-export const PortfolioHeader: React.FC = () => {
-  const { setViewingModel, viewingModel } = useStore();
+export const PortfolioHeader: React.FC<{ model: Model }> = ({ model }) => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showShareTooltip, setShowShareTooltip] = useState(false);
@@ -131,15 +130,15 @@ export const PortfolioHeader: React.FC = () => {
   };
 
   const handleDownload = async () => {
-    if (!viewingModel) return;
+    if (!model) return;
 
     setIsDownloading(true);
 
     try {
       // Generate the styled image
-      const dataUrl = await generateCinematicCompCard(viewingModel);
+      const dataUrl = await generateCinematicCompCard(model);
       
-      const filename = `La-Angels-${viewingModel.name.replace(/\s+/g, '-')}-Comp-Card.jpg`;
+      const filename = `La-Angels-${model.name.replace(/\s+/g, '-')}-Comp-Card.jpg`;
       
       const link = document.createElement('a');
       link.href = dataUrl;
@@ -151,8 +150,8 @@ export const PortfolioHeader: React.FC = () => {
       console.error('Failed to generate comp card:', error);
       // Fallback to raw image if canvas fails (e.g. strict CORS on image)
       const link = document.createElement('a');
-      link.href = viewingModel.compCard || viewingModel.image;
-      link.download = `La-Angels-${viewingModel.name}-Raw.jpg`;
+      link.href = model.compCard || model.image;
+      link.download = `La-Angels-${model.name}-Raw.jpg`;
       link.target = "_blank";
       document.body.appendChild(link);
       link.click();
@@ -173,8 +172,8 @@ export const PortfolioHeader: React.FC = () => {
         )}
       >
         {/* Left: Back Navigation */}
-        <button 
-          onClick={() => setViewingModel(null)}
+        <Link 
+          to="/"
           className="group flex items-center gap-3 relative z-10 focus:outline-none"
         >
           <div className={cn(
@@ -199,7 +198,7 @@ export const PortfolioHeader: React.FC = () => {
                To Casting Board
             </span>
           </div>
-        </button>
+        </Link>
 
         {/* Center: Brand (Visible only on scroll for context) */}
         <div className={cn(

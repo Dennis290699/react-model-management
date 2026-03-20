@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Model } from '../../types';
+import { Model } from '../../../types';
 import { PortfolioHeader } from './portfolio-header';
 import { PortfolioHero } from './portfolio-hero';
 import { PortfolioBio } from './portfolio-bio';
@@ -19,7 +19,7 @@ export const ModelPortfolio: React.FC<{ model: Model }> = ({ model }) => {
       exit={{ opacity: 0 }}
       className="bg-neutral-50 dark:bg-neutral-950 min-h-screen relative z-[60]"
     >
-      <PortfolioHeader />
+      <PortfolioHeader model={model} />
       <PortfolioHero model={model} />
       <PortfolioBio model={model} />
       <PortfolioGallery model={model} />

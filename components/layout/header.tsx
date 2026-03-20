@@ -3,12 +3,14 @@ import { Menu, Search, Sun, Moon, X, Briefcase } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 import { CategoryType } from '../../types';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme, selectedModels, setIsSearchOpen, setIsCastingOpen, setCurrentView, currentView } = useStore();
+  const { theme, toggleTheme, selectedModels, setIsSearchOpen, setIsCastingOpen } = useStore();
+  const location = useLocation();
 
   // Handle scroll detection
   useEffect(() => {
@@ -40,14 +42,11 @@ export const Header: React.FC = () => {
     { name: 'Creatives', view: 'creatives' },
   ];
 
-  const handleNavClick = (view: CategoryType) => {
-    setCurrentView(view);
+  const handleNavClick = () => {
     setMobileMenuOpen(false);
   };
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setCurrentView('home');
+  const handleLogoClick = () => {
     setMobileMenuOpen(false);
   };
 
@@ -65,7 +64,7 @@ export const Header: React.FC = () => {
 
           {/* Logo */}
           <div className="flex-shrink-0 z-50 relative">
-            <a href="/" onClick={handleLogoClick} className="group flex flex-col items-center justify-center relative">
+            <Link to="/" onClick={handleLogoClick} className="group flex flex-col items-center justify-center relative">
               <span className={cn(
                 "font-serif text-2xl md:text-3xl leading-none italic tracking-tight transition-colors duration-300",
                 isScrolled ? "text-neutral-900 dark:text-white" : "text-white"
@@ -79,20 +78,20 @@ export const Header: React.FC = () => {
               )}>
                 Management
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 xl:gap-12 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={`/${link.view}`}
-                onClick={(e) => { e.preventDefault(); handleNavClick(link.view); }}
+                to={`/${link.view}`}
+                onClick={() => handleNavClick()}
                 className={cn(
                   "relative text-[10px] uppercase tracking-[0.25em] font-medium transition-colors duration-300 group py-2",
                   isScrolled ? "text-neutral-600 dark:text-neutral-300 hover:text-black dark:hover:text-white" : "text-white/80 hover:text-white",
-                  currentView === link.view && "text-gold-500 dark:text-gold-500"
+                  location.pathname === `/${link.view}` && "text-gold-500 dark:text-gold-500"
                 )}
               >
                 {link.name}
@@ -100,7 +99,7 @@ export const Header: React.FC = () => {
                   "absolute bottom-0 left-0 w-full h-[1px] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-center",
                   isScrolled ? "bg-gold-500" : "bg-white"
                 )} />
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -181,18 +180,21 @@ export const Header: React.FC = () => {
               <div className="py-8 mt-auto mb-auto">
                 <nav className="flex flex-col gap-6 md:gap-8 mb-10">
                   {navLinks.map((link, i) => (
-                    <motion.a
+                    <motion.div
                       key={link.name}
-                      href={`/${link.view}`}
-                      onClick={(e) => { e.preventDefault(); handleNavClick(link.view); }}
                       initial={{ opacity: 0, x: -30 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + (i * 0.05), duration: 0.5 }}
-                      className="text-4xl md:text-6xl font-serif text-white/80 hover:text-gold-500 transition-colors tracking-wide italic group flex items-center gap-4 text-left"
                     >
-                      <span className="w-0 group-hover:w-8 h-px bg-gold-500 transition-all duration-300 opacity-0 group-hover:opacity-100"></span>
-                      {link.name}
-                    </motion.a>
+                      <Link
+                        to={`/${link.view}`}
+                        onClick={() => handleNavClick()}
+                        className="text-4xl md:text-6xl font-serif text-white/80 hover:text-gold-500 transition-colors tracking-wide italic group flex items-center gap-4 text-left block w-full"
+                      >
+                        <span className="w-0 group-hover:w-8 h-px bg-gold-500 transition-all duration-300 opacity-0 group-hover:opacity-100"></span>
+                        {link.name}
+                      </Link>
+                    </motion.div>
                   ))}
                 </nav>
 
